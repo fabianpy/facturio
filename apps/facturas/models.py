@@ -6,12 +6,13 @@ from utils.choices import TIPO_DOC_CHOICES, TIPO_FACTURA_CHOICES
 
 
 class Proveedor(models.Model):
-    tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES)
-    nro_doc = models.CharField(max_length=30, choices=TIPO_DOC_CHOICES)
+    tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, default="RUC")
+    nro_doc = models.CharField(max_length=30)
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=30)
     email = models.EmailField()
+    habilitado = models.BooleanField(default=True)
 
 
 class Factura(models.Model):
@@ -19,7 +20,7 @@ class Factura(models.Model):
     punto_expedicion = models.IntegerField()
     numero = models.IntegerField()
     fecha = models.DateField(auto_now=False)
-    tipo = models.CharField(max_length=2, choices=TIPO_FACTURA_CHOICES)
+    tipo = models.CharField(max_length=2, choices=TIPO_FACTURA_CHOICES, default="CON")
     timbrado = models.CharField(max_length=8)
     moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE)
 
