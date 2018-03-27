@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 
-from apps.facturas.models import Factura
+from apps.facturas.models import FacturaProveedor
 
 
 def prueba(request):
@@ -16,5 +16,5 @@ class FacturaTemplate(TemplateView):
 
 
 class FacturaCreate(CreateView):
-    model = Factura
+    model = FacturaProveedor
     template_name = 'facturas/ingresoFactura/form.html'  # TODO: crear el html

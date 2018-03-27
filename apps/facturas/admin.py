@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from apps.facturas.models import Factura, Proveedor, FacturaDetalle
+from apps.facturas.models import Proveedor, FacturaProveedor, FacturaProveedorDetalle
 
 
 @admin.register(Proveedor)
@@ -15,10 +15,10 @@ class FacturaDetalleInline(admin.StackedInline):
     """
     Clase StackedInline para hacer que en el admin de Factura aparezcan dos modelos: Factura y FacturaDetalle
     """
-    model = FacturaDetalle
+    model = FacturaProveedorDetalle
 
 
-@admin.register(Factura)
+@admin.register(FacturaProveedor)
 class FacturaAdmin(admin.ModelAdmin):
     list_display = ['establecimiento', 'punto_expedicion', 'numero', 'fecha', 'tipo', 'timbrado', 'moneda']
     list_select_related = True

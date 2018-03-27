@@ -12,6 +12,36 @@ Hacer que todos los modelos que representen la cabecera de una entidad hereden d
 """
 
 
+class BaseFactura(BaseEntidad):
+    """
+    Clase abstracta para facturas de compras y ventas
+    """
+    establecimiento = models.IntegerField(null=False)
+    punto_expedicion = models.IntegerField(null=False)
+    numero = models.IntegerField(null=False)
+    fecha = models.DateField(auto_now=False, null=False)
+    tipo = models.CharField(max_length=2, choices=TIPO_FACTURA_CHOICES, default="CON")
+    timbrado = models.CharField(max_length=8, null=False)
+    moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        abstract = True
+
+
+class BaseFacturaDetalle(BaseEntidad):
+    """
+    Clase abstracta para detalles de facturas de compras y de ventas
+    """
+    monto = models.DecimalField(max_digits=21, decimal_places=3, null=False)
+    monto_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
+    monto_iva = models.DecimalField(max_digits=21, decimal_places=3, null=False)
+    monto_iva_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
+    iva = models.ForeignKey(IVA, on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        abstract = True
+
+
 class Proveedor(BaseEntidad):
     tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, default="RUC")
     nro_doc = models.CharField(max_length=30, null=False)
@@ -21,20 +51,12 @@ class Proveedor(BaseEntidad):
     email = models.EmailField()
 
 
-class Factura(BaseEntidad):
-    establecimiento = models.IntegerField(null=False)
-    punto_expedicion = models.IntegerField(null=False)
-    numero = models.IntegerField(null=False)
-    fecha = models.DateField(auto_now=False, null=False)
-    tipo = models.CharField(max_length=2, choices=TIPO_FACTURA_CHOICES, default="CON")
-    timbrado = models.CharField(max_length=8, null=False)
-    moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE, null=False)
+class FacturaProveedor(BaseFactura):
+    """
+    Facturas de compras
+    """
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
 
-class FacturaDetalle(models.Model):
-    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    monto = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_iva = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_iva_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    iva = models.ForeignKey(IVA, on_delete=models.CASCADE, null=False)
+class FacturaProveedorDetalle(models.Model):
+    factura = models.ForeignKey(FacturaProveedor, on_delete=models.CASCADE)
