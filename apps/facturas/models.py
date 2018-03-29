@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from apps.principal.models import IVA, Moneda, BaseEntidad
 from utils.choices import TIPO_DOC_CHOICES, TIPO_FACTURA_CHOICES
-
+from utils.funciones import formatear_documento
 
 """
 IMPORTANTE:
@@ -49,6 +49,12 @@ class Proveedor(BaseEntidad):
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=30)
     email = models.EmailField()
+
+    def get_documento_formateado(self):
+        return formatear_documento(self.tipo_doc, self.nro_doc)
+
+    class Meta:
+        ordering = ['id']
 
 
 class FacturaProveedor(BaseFactura):

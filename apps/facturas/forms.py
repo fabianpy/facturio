@@ -16,7 +16,13 @@ class ProveedorForm(forms.ModelForm):
                   'habilitado': 'Habilitado'
                   }
         widgets = {
-
+            'tipo_doc': forms.Select(attrs={'style': 'width: 100%'}),
+            'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
 
