@@ -10,6 +10,9 @@ class Moneda(BaseTipo, BaseEntidad):
     abreviatura = models.CharField(max_length=10)
     simbolo = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.nombre
+
 
 class IVA(BaseEntidad):
     porcentaje = models.DecimalField(max_digits=5, decimal_places=2)

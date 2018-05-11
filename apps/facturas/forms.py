@@ -16,7 +16,7 @@ class ProveedorForm(forms.ModelForm):
                   'habilitado': 'Habilitado'
                   }
         widgets = {
-            'tipo_doc': forms.Select(attrs={'style': 'width: 100%'}),
+            'tipo_doc': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
             'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
@@ -29,6 +29,24 @@ class ProveedorForm(forms.ModelForm):
 class FacturaProveedorForm(forms.ModelForm):
     class Meta:
         model = FacturaProveedor
-        fields = ['timbrado', 'establecimiento', 'punto_expedicion', 'numero', 'fecha', 'tipo', 'moneda']
+        fields = ['timbrado', 'establecimiento', 'punto_expedicion', 'numero', 'proveedor', 'fecha', 'tipo', 'moneda']
+        labels = {'timbrado': 'Timbrado',
+                  # 'establecimiento': 'Nro. Documento',
+                  # 'punto_expedicion': 'Nombre',
+                  # 'numero': 'Número',
+                  'fecha': 'Fecha',
+                  'proveedor': 'Proveedor',
+                  'tipo': 'Tipo Factura',
+                  'moneda': 'Moneda'
+                  }
+        widgets = {
+            'proveedor': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
+            'timbrado': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'establecimiento': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'punto_expedicion': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'numero': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'tipo': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
+            'moneda': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
 
-
+        }

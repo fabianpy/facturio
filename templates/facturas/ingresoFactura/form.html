@@ -1,1 +1,99 @@
-HOLA MUNDO EN HTML
+{% extends "base/base.html" %}
+
+{% block content%}
+
+<div class="card-header ">
+    <h4 class="card-title">{{card_title}}</h4>
+</div>
+<div class="card-body ">
+    <div class="CUSTOM">
+        <form class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <br>
+            <div class="form-group">
+                <!--<div class="form-group">-->
+                    <label for="{{ form.timbrado.name }}" class="control-label col-sm-12">{{ form.timbrado.label }}</label>
+                    <div class="col-lg-6 col-sm-12">
+                        {{ form.timbrado }}
+                    </div>
+                    <label for="{{ form.establecimiento.name }}" class="control-label col-sm-12">{{ form.establecimiento.label }}</label>
+                    <div class="col-lg-6 col-sm-12">
+                        {{ form.establecimiento }}
+                    </div>
+                <!--</div>-->
+                <label for="{{ form.punto_expedicion.name }}" class="control-label col-sm-12">{{ form.punto_expedicion.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.punto_expedicion }}
+                </div>
+                <label for="{{ form.numero.name }}" class="control-label col-sm-12">{{ form.numero.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.numero }}
+                </div>
+                <label for="{{ form.proveedor.name }}" class="control-label col-sm-12">{{ form.proveedor.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.proveedor }}
+                </div>
+                <label for="{{ form.fecha.name }}" class="control-label col-sm-12">{{ form.fecha.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.fecha }}
+                </div>
+                <label for="{{ form.tipo.name }}" class="control-label col-sm-12">{{ form.tipo.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.tipo }}
+                </div>
+                <label for="{{ form.moneda.name }}" class="control-label col-sm-12">{{ form.moneda.label }}</label>
+                <div class="col-lg-6 col-sm-12">
+                    {{ form.moneda }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-8">
+                    <a href="javascript:void(0)" role="button" class="btn btn-default" id="editar"><i
+                            class="far fa-edit"></i> Editar</a>
+                    <button class="btn btn-primary" type="submit"><i class="far fa-save" aria-hidden="true"></i> Guardar
+                    </button>
+                    <a href="{% url 'facturas:ingresoFactura' %}" class="btn btn-default" id="cancelar"><i
+                            class="fas fa-times"></i> Cancelar</a>
+                </div>
+            </div>
+
+            {% if object.id %}
+            <table class="table table-hover">
+                <thead>
+                <tr role="row">
+                    <th aria-label>Cantidad</th>
+                    <th aria-label>Descripción</th>
+                    <th aria-label>Monto</th>
+                    <th aria-label>Monto Eq.</th>
+                    <th aria-label>IVA %</th>
+                    <th aria-label>Monto IVA</th>
+                    <th aria-label>Monto IVA Eq.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if detalles_factura %}
+                {% for row in detalles_factura %}
+                <tr>
+                    <td>
+                        <a href="javascript:void(0)">{{row.cantidad}}</a>
+                    </td>
+                    <td>{{row.descripcion}}</td>
+                    <td>{{row.monto}}</td>
+                    <td>{{row.monto_eq}}</td>
+                    <td>{{row.iva.porcentaje}}</td>
+                    <td>{{row.monto_iva}}</td>
+                    <td>{{row.monto_iva_eq}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+                </tbody>
+
+            </table>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

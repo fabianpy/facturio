@@ -22,6 +22,7 @@
 
     <!-- My CSS Files -->
     <!--<link href="{% static 'fontawesome/css/fa-svg-with-js.css' %}" rel="stylesheet">-->
+    <link href="{% static 'custom/css/component-chosen.min.css' %}" rel="stylesheet">
 
     <style type="text/css">
         .big-checkbox {width: 30px; height: 30px;}
@@ -169,15 +170,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card ">
-                            <div class="card-header ">
-                                <h4 class="card-title">ENCABEZADO DE MI TARJETA</h4>
-                            </div>
-                            <div class="card-body ">
-                                <div class="CUSTOM">
-                                    {% block content%}
-                                    {% endblock %}
-                                </div>
-                            </div>
+                            {% block content%}
+                            {% endblock %}
                         </div>
                     </div>
                 </div>
@@ -514,6 +508,7 @@
 
 <!--   My static files   -->
 <script src="{% static 'fontawesome/js/fontawesome-all.js' %}"></script>
+<script src="{% static 'custom/js/chosen.jquery.js' %}"></script>
 
 
 
@@ -525,5 +520,11 @@
         demo.initDashboardPageCharts();
     });
 </script>-->
+
+<script>
+    $('.form-control-chosen').chosen({
+        allow_single_deselect: true
+    });
+</script>
 
 </html>

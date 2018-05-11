@@ -22,24 +22,31 @@ class BaseFactura(BaseEntidad):
     fecha = models.DateField(auto_now=False, null=False)
     tipo = models.CharField(max_length=2, choices=TIPO_FACTURA_CHOICES, default="CON")
     timbrado = models.CharField(max_length=8, null=False)
-    moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE, null=False)
+    moneda = models.ForeignKey(Moneda, on_delete=models.CASCADE, null=False, default=1)
 
     class Meta:
         abstract = True
 
 
-class BaseFacturaDetalle(BaseEntidad):
+class BaseFacturaDetalle(models.Model):
     """
     Clase abstracta para detalles de facturas de compras y de ventas
     """
-    monto = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_iva = models.DecimalField(max_digits=21, decimal_places=3, null=False)
-    monto_iva_eq = models.DecimalField(max_digits=21, decimal_places=3, null=False)
+    cantidad = models.IntegerField(default=1, null=False)
+    monto = models.DecimalField(max_digits=15, decimal_places=3, null=False)
+    monto_eq = models.DecimalField(max_digits=15, decimal_places=3, null=False, verbose_name="Monto equivalente")
     iva = models.ForeignKey(IVA, on_delete=models.CASCADE, null=False)
+    monto_iva = models.DecimalField(max_digits=15, decimal_places=3, null=False)
+    monto_iva_eq = models.DecimalField(max_digits=15, decimal_places=3, null=False,
+                                       verbose_name="Monto IVA equivalente")
+    descripcion = models.CharField(max_length=512, blank=True, null=True, verbose_name="Descripción")
 
     class Meta:
         abstract = True
+
+
+class GrupoProveedor(BaseEntidad):
+    nombre = models.CharField(max_length=100, null=False)
 
 
 class Proveedor(BaseEntidad):
@@ -49,8 +56,12 @@ class Proveedor(BaseEntidad):
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=30)
     email = models.EmailField()
+    grupo = models.ForeignKey(GrupoProveedor, on_delete=models.CASCADE)
 
-    def get_documento_formateado(self):
+    def __str__(self):
+        return '({}-{}) {}'.format(self.tipo_doc, self.nro_doc, self.nombre)
+
+    def documento_formateado(self):
         return formatear_documento(self.tipo_doc, self.nro_doc)
 
     class Meta:
@@ -63,6 +74,12 @@ class FacturaProveedor(BaseFactura):
     """
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
+    # def __str__(self):
+    #     return '{0:04}-{0:04}-{0:09}'.format(self.establecimiento, self.punto_expedicion, self.numero)
 
-class FacturaProveedorDetalle(models.Model):
-    factura = models.ForeignKey(FacturaProveedor, on_delete=models.CASCADE)
+    def numero_formateado(self):
+        return '{0:03}-{0:03}-{0:08}'.format(self.establecimiento, self.punto_expedicion, self.numero)
+
+
+class FacturaProveedorDetalle(BaseFacturaDetalle):
+    factura = models.ForeignKey(FacturaProveedor, on_delete=models.CASCADE, null=False)
