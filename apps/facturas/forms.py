@@ -6,10 +6,11 @@ from apps.facturas.models import FacturaProveedor, Proveedor
 class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
-        fields = ['tipo_doc', 'nro_doc', 'nombre', 'direccion', 'telefono', 'email', 'habilitado']
+        fields = ['tipo_doc', 'nro_doc', 'nombre', 'grupo', 'direccion', 'telefono', 'email', 'habilitado']
         labels = {'tipo_doc': 'Tipo de Documento',
                   'nro_doc': 'Nro. Documento',
                   'nombre': 'Nombre',
+                  'grupo': 'Grupo',
                   'direccion': 'Dirección',
                   'telefono': 'Teléfono',
                   'email': 'E-Mail',
@@ -19,6 +20,7 @@ class ProveedorForm(forms.ModelForm):
             'tipo_doc': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
             'nro_doc': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'grupo': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
             'direccion': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -45,7 +47,7 @@ class FacturaProveedorForm(forms.ModelForm):
             'establecimiento': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
             'punto_expedicion': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
             'numero': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'fecha': forms.DateInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'required': 'required'}),
             'tipo': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
             'moneda': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
 

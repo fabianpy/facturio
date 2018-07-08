@@ -1,28 +1,36 @@
 {% extends "base/base.html" %}
-
 {% block content%}
-<div class="card-header ">
-    <h4 class="card-title">{{card_title}}
-        <div class="btn-group pull-right" role="group">
-            <a href="{% url 'facturas:ingresoFactura-crear' %}" type="button" class="btn btn-outline-primary btn-sm"><i class="fa fa-plus"></i> Nuevo</a>
-        </div>
-    </h4>
-</div>
-<div class="card-body ">
-    <div class="CUSTOM">
 
-        <table class="table table-hover">
-            <thead>
-            <tr role="row">
-                <th aria-label>ID</th>
-                <th aria-label>Proveedor</th>
-                <th aria-label>Factura</th>
-                <th aria-label>Fecha</th>
-                <th aria-label>Tipo</th>
-                <th aria-label class="text-center">Habilitado</th>
-            </tr>
-            </thead>
-            <tbody>
+<!--
+
+<div class="card-title">
+    <h4>Lista de Facturas</h4>
+    &lt;!&ndash;<div class="panel-heading clearfix">&ndash;&gt;
+        &lt;!&ndash;Lista de facturas&ndash;&gt;
+        <div class="btn-group pull-right" role="group">
+            <a href="{% url 'facturas:ingresoFactura-crear' %}" type="button" role="button" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Nuevo</a>
+        </div>
+    &lt;!&ndash;</div>&ndash;&gt;
+    &lt;!&ndash; /.panel-heading &ndash;&gt;
+    &lt;!&ndash;<div class="panel-body">&ndash;&gt;
+-->
+<div class="btn-group" role="group">
+    <a href="{% url 'facturas:ingresoFactura-crear' %}" type="button" role="button" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Nuevo</a>
+</div>
+
+    <div class="table-responsive">
+        <table class="table datatables table-hover table-bordered table-striped">
+        <thead>
+        <tr role="row">
+            <th aria-label>ID</th>
+            <th aria-label>Proveedor</th>
+            <th aria-label>Factura</th>
+            <th aria-label>Fecha</th>
+            <th aria-label>Tipo</th>
+            <th aria-label class="text-center">Habilitado</th>
+        </tr>
+        </thead>
+        <tbody>
             {% if object_list%}
             {% for row in object_list %}
             <tr>
@@ -43,8 +51,11 @@
             </tr>
             {% endfor %}
             {% endif %}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
     </div>
-</div>
+
+
+    <!--</div>-->
+<!--</div>-->
 {% endblock %}

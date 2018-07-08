@@ -1,17 +1,20 @@
 {% extends "base/base.html" %}
 
 {% block content%}
-<div class="card-header ">
-    <h4 class="card-title">{{card_title}}
+<!--<div class="card-header ">
+    <h4>{{titulo}}
         <div class="btn-group pull-right" role="group">
             <a href="{% url 'facturas:proveedores-crear' %}" type="button" class="btn btn-outline-primary btn-sm"><i class="fa fa-plus"></i> Nuevo</a>
         </div>
     </h4>
-</div>
-<div class="card-body ">
-    <div class="CUSTOM">
+</div>-->
+<!--<div class="card-body ">-->
 
-        <table class="table table-hover">
+<div class="btn-group" role="group">
+    <a href="{% url 'facturas:proveedores-crear' %}" type="button" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Nuevo</a>
+</div>
+    <div class="table-responsive">
+        <table class="table datatables table-hover table-bordered table-striped">
             <thead>
             <tr role="row">
                 <th aria-label>ID</th>
@@ -48,5 +51,5 @@
             </tbody>
         </table>
     </div>
-</div>
+<!--</div>-->
 {% endblock %}
