@@ -1,37 +1,20 @@
+
+
 {% extends "base/base.html" %}
 {% load staticfiles %}
-
 {% block content%}
-
-
 <form class="form-horizontal" method="POST">
     {% csrf_token %}
     <input type="hidden" id="object_id" value="{{object.id}}">
     <br>
     <div class="form-group">
         <div class="row">
-                <label for="{{ form.timbrado.name }}" class="control-label col-sm-2">{{ form.timbrado.label }}</label>
+            <label for="{{ form.timbrado.name }}" class="control-label col-sm-2">{{ form.timbrado.label }}</label>
             <div class="col-sm-4">
                 {{ form.timbrado }}
             </div>
         </div>
     </div>
-
-    <!--<div class="form-group">
-        <label for="{{ form.establecimiento.name }}" class="control-label col-sm-12">{{ form.establecimiento.label }}</label>
-        <div class="col-lg-6 col-sm-12">
-            {{ form.establecimiento }}
-        </div>
-        <label for="{{ form.punto_expedicion.name }}" class="control-label col-sm-12">{{ form.punto_expedicion.label }}</label>
-        <div class="col-lg-6 col-sm-12">
-            {{ form.punto_expedicion }}
-        </div>
-        <label for="{{ form.numero.name }}" class="control-label col-sm-12">{{ form.numero.label }}</label>
-        <div class="col-lg-6 col-sm-12">
-            {{ form.numero }}
-        </div>
-    </div>-->
-
     <div class="form-group">
         <div class="row">
             <label for="{{ form.establecimiento.name }}" class="control-label col-sm-2">Factura</label>
@@ -46,16 +29,15 @@
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <label for="{{ form.proveedor.name }}" class="control-label col-sm-2">{{ form.proveedor.label }}</label>
             <div class="col-sm-6">
                 {{ form.proveedor }}
             </div>
+            <span><a href="{% url 'facturas:proveedores-crear' %}" class="fa fa-plus-circle fa-2x"></a></span>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <label for="{{ form.fecha.name }}" class="control-label col-sm-2">{{ form.fecha.label }}</label>
@@ -64,7 +46,6 @@
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <label for="{{ form.tipo.name }}" class="control-label col-sm-2">{{ form.tipo.label }}</label>
@@ -73,7 +54,6 @@
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <div class="row">
             <label for="{{ form.moneda.name }}" class="control-label col-sm-2">{{ form.moneda.label }}</label>
@@ -82,25 +62,23 @@
             </div>
         </div>
     </div>
-
     <div class="form-group">
         <!--<div class="row">-->
-            <div class="col-sm-offset-4 col-sm-8">
-                {% if object.id %}
-                <a href="javascript:void(0)" role="button" class="btn btn-secondary" id="editar">
-                    <i class="fa fa-edit"></i> Editar
-                </a>
-                {% endif %}
-                <button class="btn btn-primary" type="submit">
-                    <i class="fa fa-save" aria-hidden="true"></i> Guardar
-                </button>
-                <a href="{% url 'facturas:ingresoFactura' %}" class="btn btn-danger" id="cancelar">
-                    <i class="fa fa-times"></i> Cancelar
-                </a>
-            </div>
+        <div class="col-sm-offset-4 col-sm-8">
+            {% if object.id %}
+            <a href="javascript:void(0)" role="button" class="btn btn-secondary" id="editar">
+            <i class="fa fa-edit"></i> Editar
+            </a>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">
+            <i class="fa fa-save" aria-hidden="true"></i> Guardar
+            </button>
+            <a href="{% url 'facturas:ingresoFactura' %}" class="btn btn-danger" id="cancelar">
+            <i class="fa fa-times"></i> Cancelar
+            </a>
+        </div>
         <!--</div>-->
     </div>
-
     {% if object.id %}
     <h4 class="card-title">
         Detalles de Factura
@@ -111,89 +89,83 @@
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped">
             <thead>
-            <tr role="row">
-                <th aria-label>Cantidad</th>
-                <th aria-label>Descripción</th>
-                <th aria-label>Monto</th>
-                <th aria-label>Monto Eq.</th>
-                <th aria-label>IVA %</th>
-                <th aria-label>Monto IVA</th>
-                <th aria-label>Monto IVA Eq.</th>
-            </tr>
+                <tr role="row">
+                    <th aria-label>Cantidad</th>
+                    <th aria-label>Descripción</th>
+                    <th aria-label>Monto</th>
+                    <th aria-label>Monto Eq.</th>
+                    <th aria-label>IVA %</th>
+                    <th aria-label>Monto IVA</th>
+                    <th aria-label>Monto IVA Eq.</th>
+                </tr>
             </thead>
             <tbody>
-            {% if detalles_factura %}
-            {% for row in detalles_factura %}
-            <tr>
-                <td>
-                    <a href="javascript:void(0)" id="{{row.id}}" name="detalleFactura">{{row.cantidad}}</a>
-                </td>
-                <td>{{row.descripcion}}</td>
-                <td>{{row.monto}}</td>
-                <td>{{row.monto_eq}}</td>
-                <td>{{row.iva.porcentaje}}</td>
-                <td>{{row.monto_iva}}</td>
-                <td>{{row.monto_iva_eq}}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
+                {% if detalles_factura %}
+                {% for row in detalles_factura %}
+                <tr>
+                    <td>
+                        <a href="javascript:void(0)" id="{{row.id}}" name="detalleFactura">{{row.cantidad}}</a>
+                    </td>
+                    <td>{{row.descripcion}}</td>
+                    <td>{{row.monto}}</td>
+                    <td>{{row.monto_eq}}</td>
+                    <td>{{row.iva.porcentaje}}</td>
+                    <td>{{row.monto_iva}}</td>
+                    <td>{{row.monto_iva_eq}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
             </tbody>
-
         </table>
     </div>
     {% endif %}
 </form>
-
-
 <div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detalle de factura</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <input type="hidden" id="object_detalle_id">
-          <div class="form-group">
-            <label for="cantidad" class="col-form-label">Cantidad:</label>
-            <input type="number" class="form-control" id="cantidad">
-          </div>
-          <div class="form-group">
-            <label for="monto" class="col-form-label">Monto:</label>
-            <input type="number" class="form-control" id="monto">
-          </div>
-          <div class="form-group">
-            <label for="iva" class="col-form-label">IVA:</label>
-            <select class="form-control-chosen" id="iva">
-                 <option value="1">10 %</option>
-                 <option value="2">5 %</option>
-                 <option value="3">Exenta</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="monto" class="col-form-label">Monto IVA:</label>
-            <input type="number" class="form-control" id="monto_iva">
-          </div>
-          <div class="form-group">
-            <label for="descripcion" class="col-form-label">Descripción:</label>
-            <textarea class="form-control" id="descripcion"></textarea>
-          </div>
-        </form>
-      </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="guardarDetalle">Guardar</button>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalle de factura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="object_detalle_id">
+                    <div class="form-group">
+                        <label for="cantidad" class="col-form-label">Cantidad:</label>
+                        <input type="number" class="form-control" id="cantidad">
+                    </div>
+                    <div class="form-group">
+                        <label for="monto" class="col-form-label">Monto:</label>
+                        <input type="number" class="form-control" id="monto">
+                    </div>
+                    <div class="form-group">
+                        <label for="iva" class="col-form-label">IVA:</label>
+                        <select class="form-control-chosen" id="iva">
+                            <option value="1">10 %</option>
+                            <option value="2">5 %</option>
+                            <option value="3">Exenta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto" class="col-form-label">Monto IVA:</label>
+                        <input type="number" class="form-control" id="monto_iva">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion" class="col-form-label">Descripción:</label>
+                        <textarea class="form-control" id="descripcion"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarDetalle">Guardar</button>
+            </div>
         </div>
     </div>
-  </div>
 </div>
-
 <script src="{% static 'ela/js/lib/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'apps/facturas/ingresoFactura/form.js' %}"></script>
-
-
-
 {% endblock %}
+

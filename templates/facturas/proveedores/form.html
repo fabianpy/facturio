@@ -1,158 +1,170 @@
+
+
 {% extends "base/base.html" %}
 {% load staticfiles %}
-
 {% block content%}
-
-<!--<div class="card-header ">-->
-    <!--<h4 class="card-title">{{titulo}}</h4>-->
-<!--</div>-->
-<!--<div class="card-body ">-->
-    <!--<div class="CUSTOM">-->
-        <form class="form-horizontal" method="POST">
-            {% csrf_token %}
-            <input type="hidden" id="object_id" value="{{object.id}}">
-            <br>
-            <div class="form-group">
-                <label for="{{ form.tipo_doc.name }}" class="control-label col-sm-12">{{ form.tipo_doc.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.tipo_doc }}
-                </div>
-                <label for="{{ form.nro_doc.name }}" class="control-label col-sm-12">{{ form.nro_doc.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.nro_doc }}
-                </div>
-                <label for="{{ form.nombre.name }}" class="control-label col-sm-12">{{ form.nombre.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.nombre }}
-                </div>
-                <label for="{{ form.grupo.name }}" class="control-label col-sm-12">{{ form.grupo.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.grupo }}
-                </div>
-                <label for="{{ form.direccion.name }}" class="control-label col-sm-12">{{ form.direccion.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.direccion }}
-                </div>
-                <label for="{{ form.telefono.name }}" class="control-label col-sm-12">{{ form.telefono.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.telefono }}
-                </div>
-                <label for="{{ form.email.name }}" class="control-label col-sm-12">{{ form.email.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.email }}
-                </div>
-                <label for="{{ form.habilitado.name }}" class="control-label col-sm-12">{{ form.habilitado.label }}</label>
-                <div class="col-lg-6 col-sm-12">
-                    {{ form.habilitado }}
-                </div>
-
-
+<form class="form-horizontal" method="POST">
+    {% csrf_token %}
+    <input type="hidden" id="object_id" value="{{object.id}}">
+    <br>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.tipo_doc.name }}" class="control-label col-sm-2">{{ form.tipo_doc.label }}</label>
+            <div class="col-sm-4">
+                {{ form.tipo_doc }}
             </div>
-
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8">
-                    {% if object.id %}
-                    <a href="javascript:void(0)" role="button" class="btn btn-secondary" id="editar">
-                        <i class="fa fa-edit"></i> Editar
-                    </a>
-                    {% endif %}
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fa fa-save" aria-hidden="true"></i> Guardar
-                    </button>
-                    <a href="{% url 'facturas:proveedores' %}" class="btn btn-danger" id="cancelar">
-                    <i class="fa fa-times"></i> Cancelar
-                </a>
-                </div>
-            </div>
-
-            {% if object.id %}
-            <h4 class="card-title">
-                Timbrados del proveedor
-                <div class="btn-group pull-right" role="group">
-                    <a href="javascript:void(0)" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalTimbrado" id="nuevo"><i class="fa fa-plus"></i> Nuevo</a>
-                </div>
-            </h4>
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered table-striped">
-                    <thead>
-                    <tr role="row">
-                        <th aria-label>Timbrado</th>
-                        <th aria-label>Establecimiento</th>
-                        <th aria-label>Punto de Expedición</th>
-                        <th aria-label>Vigencia</th>
-                        <th aria-label>Vencimiento</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% if timbrados %}
-                    {% for row in timbrados %}
-                    <tr>
-                        <td>
-                            <a href="javascript:void(0)" id="{{row.id}}" name="timbrado">{{row.timbrado}}</a>
-                        </td>
-                        <td>{{row.establecimiento}}</td>
-                        <td>{{row.punto_expedicion}}</td>
-                        <td>{{row.vigencia}}</td>
-                        <td>{{row.vencimiento}}</td>
-
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
-                    </tbody>
-
-                </table>
-            </div>
-            {% endif %}
-
-        </form>
-    <!--</div>-->
-<!--</div>-->
-
-<div class="modal fade" id="modalTimbrado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Timbrado del proveedor</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <input type="hidden" id="timbrado_id">
-          <div class="form-group">
-            <label for="timbrado" class="col-form-label">Timbrado:</label>
-            <input class="form-control" id="timbrado">
-          </div>
-          <div class="form-group">
-            <label for="establecimiento" class="col-form-label">Establecimiento:</label>
-            <input type="number" class="form-control" id="establecimiento">
-          </div>
-          <div class="form-group">
-            <label for="punto_expedicion" class="col-form-label">Punto de Expedición:</label>
-            <input type="number" class="form-control" id="punto_expedicion">
-          </div>
-          <div class="form-group">
-            <label for="vigencia" class="col-form-label">Vigencia:</label>
-            <input class="form-control" id="vigencia">
-          </div>
-          <div class="form-group">
-            <label for="vencimiento" class="col-form-label">Vencimiento:</label>
-            <input class="form-control" id="vencimiento">
-          </div>
-
-        </form>
-      </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" id="guardarDetalle">Guardar</button>
         </div>
     </div>
-  </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.nro_doc.name }}" class="control-label col-sm-2">{{ form.nro_doc.label }}</label>
+            <div class="col-sm-4">
+                {{ form.nro_doc }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.nombre.name }}" class="control-label col-sm-2">{{ form.nombre.label }}</label>
+            <div class="col-sm-4">
+                {{ form.nombre }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.grupo.name }}" class="control-label col-sm-2">{{ form.grupo.label }}</label>
+            <div class="col-sm-4">
+                {{ form.grupo }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.direccion.name }}" class="control-label col-sm-2">{{ form.direccion.label }}</label>
+            <div class="col-sm-4">
+                {{ form.direccion }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.telefono.name }}" class="control-label col-sm-2">{{ form.telefono.label }}</label>
+            <div class="col-sm-4">
+                {{ form.telefono }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.email.name }}" class="control-label col-sm-2">{{ form.email.label }}</label>
+            <div class="col-sm-4">
+                {{ form.email }}
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="{{ form.habilitado.name }}" class="control-label col-sm-2">{{ form.habilitado.label }}</label>
+            <div class="col-sm-4">
+                {{ form.habilitado }}
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-8">
+            {% if object.id %}
+            <a href="javascript:void(0)" role="button" class="btn btn-secondary" id="editar">
+            <i class="fa fa-edit"></i> Editar
+            </a>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">
+            <i class="fa fa-save" aria-hidden="true"></i> Guardar
+            </button>
+            <a href="{% url 'facturas:proveedores' %}" class="btn btn-danger" id="cancelar">
+            <i class="fa fa-times"></i> Cancelar
+            </a>
+        </div>
+    </div>
+    {% if object.id %}
+    <h4 class="card-title">
+        Timbrados del proveedor
+        <div class="btn-group pull-right" role="group">
+            <a href="javascript:void(0)" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalTimbrado" id="nuevo"><i class="fa fa-plus"></i> Nuevo</a>
+        </div>
+    </h4>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-striped">
+            <thead>
+                <tr role="row">
+                    <th aria-label>Timbrado</th>
+                    <th aria-label>Establecimiento</th>
+                    <th aria-label>Punto de Expedición</th>
+                    <th aria-label>Vigencia</th>
+                    <th aria-label>Vencimiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if timbrados %}
+                {% for row in timbrados %}
+                <tr>
+                    <td>
+                        <a href="javascript:void(0)" id="{{row.id}}" name="timbrado">{{row.timbrado}}</a>
+                    </td>
+                    <td>{{row.establecimiento}}</td>
+                    <td>{{row.punto_expedicion}}</td>
+                    <td>{{row.vigencia}}</td>
+                    <td>{{row.vencimiento}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</form>
+<div class="modal fade" id="modalTimbrado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Timbrado del proveedor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="timbrado_id">
+                    <div class="form-group">
+                        <label for="timbrado" class="col-form-label">Timbrado:</label>
+                        <input class="form-control" id="timbrado">
+                    </div>
+                    <div class="form-group">
+                        <label for="establecimiento" class="col-form-label">Establecimiento:</label>
+                        <input type="number" class="form-control" id="establecimiento">
+                    </div>
+                    <div class="form-group">
+                        <label for="punto_expedicion" class="col-form-label">Punto de Expedición:</label>
+                        <input type="number" class="form-control" id="punto_expedicion">
+                    </div>
+                    <div class="form-group">
+                        <label for="vigencia" class="col-form-label">Vigencia:</label>
+                        <input class="form-control" id="vigencia">
+                    </div>
+                    <div class="form-group">
+                        <label for="vencimiento" class="col-form-label">Vencimiento:</label>
+                        <input class="form-control" id="vencimiento">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarDetalle">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>
-
 <script src="{% static 'ela/js/lib/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'apps/facturas/proveedores/form.js' %}"></script>
-
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import JsonResponse
 from django.shortcuts import render
 
@@ -65,6 +66,17 @@ class TimbradoProveedorView(View):
         data = serializers.serialize('json', [timbrado])
         print("data ", data)
         return JsonResponse(data, safe=False)
+
+    def post(self, request):
+        timbrado = request.POST.get('timbrado')
+        try:
+            timbrado_proveedor = TimbradoProveedor.objects.get(timbrado=timbrado)
+            data = serializers.serialize('json', [timbrado_proveedor])
+            return JsonResponse(data, safe=False)
+        except ObjectDoesNotExist:
+            timbrado_proveedor = TimbradoProveedor()
+            data = serializers.serialize('json', [timbrado_proveedor])
+            return JsonResponse(data, safe=False)
 
 
 class TimbradoProveedorCreate(View):

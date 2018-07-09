@@ -92,7 +92,11 @@ $(function(){
     /***************** ON FOCUS OUT *******************/
 
     $('#id_timbrado').focusout(function(){
-        console.log('focus de timbrado is out')
+
+        //console.log("$('#object_id').val()", $('#object_id').val(), $('#object_id').val().length);
+        if ($('#object_id').val() != null && $('#object_id').val().length == 0) {
+            buscarDatosTimbradoProveedor($('#id_timbrado').val());
+        }
     });
 
 })
@@ -115,6 +119,38 @@ function calcularIVA(param) {
     else if (param.iva == 3) //exenta
         return 0;
     else alert("Código de IVA no definido")
+}
+
+function buscarDatosTimbradoProveedor(timbrado) {
+    var data = new Object;
+    data.timbrado = timbrado;
+    data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+    var $data = new Object;
+
+    $.post('/facturas/ingresoFactura/timbradoProveedor', data)
+    .done(function(data) {
+        console.log("llego al done");
+        console.log("data", $.parseJSON(data)[0]);
+
+        var data = $.parseJSON(data)[0];
+        if(data.pk != null) {
+            $data = data.fields;
+            setDataTimbradoProveedor($data);
+        }
+        else
+            $data = null;
+    })
+    .fail(function(data) {
+       // alert("Error al traer datos del proveedor.")
+    })
+}
+
+function setDataTimbradoProveedor(data) {
+    console.log("data en set tim pro", data);
+    $('#id_establecimiento').val(data.establecimiento);
+    $('#id_punto_expedicion').val(data.punto_expedicion);
+    $('#id_proveedor').val(data.proveedor).trigger('chosen:updated');
+    $('#id_numero').focus();
 }
 
 function redondearNumero(numero, decimales){
