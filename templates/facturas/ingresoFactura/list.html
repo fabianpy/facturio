@@ -1,48 +1,52 @@
+
+
 {% extends "base/base.html" %}
 {% block content%}
-
 <div class="btn-group" role="group">
     <a href="{% url 'facturas:ingresoFactura-crear' %}" type="button" role="button" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Nuevo</a>
 </div>
-
-    <div class="table-responsive">
-        <table class="table datatables table-hover table-bordered table-striped">
-        <thead>
-        <tr role="row">
-            <th aria-label>ID</th>
-            <th aria-label>Proveedor</th>
-            <th aria-label>Factura</th>
-            <th aria-label>Fecha</th>
-            <th aria-label>Tipo</th>
-            <th aria-label class="text-center">Habilitado</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% if object_list%}
-            {% for row in object_list %}
-            <tr>
-                <td>
-                    <a href="{% url 'facturas:ingresoFactura-editar' row.id %}">{{row.id}}</a>
-                </td>
-                <td>{{row.proveedor.documento_formateado}} {{row.proveedor.nombre}}</td>
-                <td>{{row.numero_formateado}}</td>
-                <td>{{row.fecha}}</td>
-                <td>{{row.get_tipo_display}}</td>
-                <td class="text-center">
-                    {% if row.habilitado %}
-                    <input class="big-checkbox" type="checkbox" checked="checked" onclick="return false">
-                    {% else %}
-                    <input class="big-checkbox" type="checkbox" onclick="return false">
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-        </tbody>
-    </table>
+<div class="card">
+    <div class="card-title">
+        <h3>{{titulo}}</h3>
     </div>
-
-
-    <!--</div>-->
-<!--</div>-->
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table datatables table-hover table-bordered table-striped">
+                <thead>
+                    <tr role="row">
+                        <th aria-label>ID</th>
+                        <th aria-label>Proveedor</th>
+                        <th aria-label>Factura</th>
+                        <th aria-label>Fecha</th>
+                        <th aria-label>Tipo</th>
+                        <th aria-label class="text-center">Habilitado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if object_list%}
+                    {% for row in object_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'facturas:ingresoFactura-editar' row.id %}">{{row.id}}</a>
+                        </td>
+                        <td>{{row.proveedor.documento_formateado}} {{row.proveedor.nombre}}</td>
+                        <td>{{row.numero_formateado}}</td>
+                        <td>{{row.fecha}}</td>
+                        <td>{{row.get_tipo_display}}</td>
+                        <td class="text-center">
+                            {% if row.habilitado %}
+                            <input class="big-checkbox" type="checkbox" checked="checked" onclick="return false">
+                            {% else %}
+                            <input class="big-checkbox" type="checkbox" onclick="return false">
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
