@@ -26,6 +26,7 @@ class BaseFactura(BaseEntidad):
 
     class Meta:
         abstract = True
+        unique_together = ('timbrado', 'establecimiento', 'punto_expedicion', 'numero')
 
 
 class BaseFacturaDetalle(models.Model):
@@ -54,8 +55,8 @@ class GrupoProveedor(BaseEntidad):
 
 class Proveedor(BaseEntidad):
     tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, default="RUC")
-    nro_doc = models.CharField(max_length=30, null=False)
-    nombre = models.CharField(max_length=100, null=False)
+    nro_doc = models.CharField(max_length=30, null=False, unique=True)
+    nombre = models.CharField(max_length=100, null=False, unique=True)
     direccion = models.CharField(max_length=255, null=True, blank=True)
     telefono = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
@@ -68,7 +69,7 @@ class Proveedor(BaseEntidad):
         return formatear_documento(self.tipo_doc, self.nro_doc)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['nombre']
 
 
 class TimbradoProveedor(BaseEntidad):

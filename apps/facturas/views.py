@@ -5,13 +5,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls.base import reverse
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
 from apps.facturas.forms import ProveedorForm, FacturaProveedorForm
 from apps.facturas.models import FacturaProveedor, Proveedor, FacturaProveedorDetalle, TimbradoProveedor
 from apps.principal.models import IVA
+from apps.sistema.models import Transaccion
 
 
 def prueba(request):
@@ -27,6 +28,10 @@ class ProveedorList(ListView):
         context['titulo'] = "Proveedores"
         return context
 
+    def get_queryset(self):
+        qs = Proveedor.user_objects.all()
+        return qs
+
 
 class ProveedorCreate(CreateView):
     template_name = 'facturas/proveedores/form.html'
@@ -40,6 +45,10 @@ class ProveedorCreate(CreateView):
 
     def get_success_url(self):
         return reverse('facturas:proveedores-editar', args=[self.object.id])
+
+    def form_valid(self, form):
+        form.instance.transaccion = Transaccion.crear_transaccion(Transaccion.CREACION_PROVEEDOR, self.request.user)
+        return super().form_valid(form)
 
 
 class ProveedorUpdate(UpdateView):
@@ -132,6 +141,11 @@ class FacturaProveedorCreate(CreateView):
 
     def get_success_url(self):
         return reverse('facturas:ingresoFactura-editar', args=[self.object.id])
+
+    def form_valid(self, form):
+        form.instance.transaccion = Transaccion.crear_transaccion(Transaccion.CREACION_FACTURA_PROVEEDOR,
+                                                                  self.request.user)
+        return super().form_valid(form)
 
 
 class FacturaProveedorUpdate(UpdateView):
