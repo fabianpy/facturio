@@ -30,14 +30,21 @@ $(function(){
     });
 
     $('#guardarDetalle').click(function(){
-        console.log('clic en guardar');
+        /*console.log(moment($('#vigencia').val(), 'YYYY-MM-DD'), moment($('#vencimiento').val(), 'YYYY-MM-DD'), moment(new Date($('#vigencia').val())).format('YYYY MM DD'));
+        console.log(moment(new Date($('#vigencia').val())).format('YYYY MM DD'));
+        console.log(moment(new Date($('#vigencia').val())).format('YYYY-MM-DD'));
+        console.log(moment(new Date($('#vigencia').val())).format());
+        console.log(moment($('#vigencia').val(), 'DD/MM/YYYY'));
+        console.log(moment($('#vigencia').val(), 'DD/MM/YYYY').format());
+        console.log(moment($('#vigencia').val(), ['DD/MM/YYYY', 'YYYY-MM-DD'], true).format('YYYY-MM-DD'));*/
+
         var data = new Object();
         data.proveedor = parseInt($('#object_id').val());
         data.timbrado = $('#timbrado').val();
         data.establecimiento = parseInt($('#establecimiento').val());
         data.punto_expedicion = parseInt($('#punto_expedicion').val());
-        data.vigencia = $('#vigencia').val();
-        data.vencimiento = $('#vencimiento').val();
+        data.vigencia = moment($('#vigencia').val(), ['DD/MM/YYYY', 'YYYY-MM-DD'], true).format('YYYY-MM-DD')
+        data.vencimiento = moment($('#vencimiento').val(), ['DD/MM/YYYY', 'YYYY-MM-DD'], true).format('YYYY-MM-DD');
         data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
 
         var url = '';
@@ -48,7 +55,7 @@ $(function(){
             data.id = $('#timbrado_id').val();
         }
 
-        console.log('el url es:', url, 'object detalle id: "' + $('#timbrado_id').val() + '"'); //borrar
+        //console.log('el url es:', url, 'object detalle id: "' + $('#timbrado_id').val() + '"'); //borrar
 
         $.post(url, data)
         .done(function(data) {

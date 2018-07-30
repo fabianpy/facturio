@@ -149,8 +149,8 @@ function setDataTimbradoProveedor(data) {
     console.log("data en set tim pro", data);
     $('#id_establecimiento').val(data.establecimiento);
     $('#id_punto_expedicion').val(data.punto_expedicion);
-    $('#id_proveedor').val(data.proveedor).trigger('chosen:updated');
     $('#id_numero').focus();
+    $('#id_proveedor').val(data.proveedor).trigger('chosen:updated');
 }
 
 function redondearNumero(numero, decimales){

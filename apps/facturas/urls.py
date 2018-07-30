@@ -4,7 +4,7 @@ from apps.facturas import views
 
 app_name = 'facturas'
 urlpatterns = [
-    path('ingresoFactura/', views.FacturaList.as_view(), name="ingresoFactura"),
+    path('ingresoFactura/', views.FacturaProveedorList.as_view(), name="ingresoFactura"),
     path('ingresoFactura/crear', views.FacturaProveedorCreate.as_view(), name="ingresoFactura-crear"),
     path('ingresoFactura/<int:pk>/editar', views.FacturaProveedorUpdate.as_view(), name="ingresoFactura-editar"),
     path('ingresoFactura/detalle/<int:pk>', views.FacturaProveedorDetalleView.as_view(), name="ingresoFactura-detalle"),
@@ -15,6 +15,9 @@ urlpatterns = [
     path('ingresoFactura/timbradoProveedor', views.TimbradoProveedorView.as_view(),  # POST
          name="ingresoFactura-timbrado-proveedor"),
 
+    path('grupoProveedor/', views.GrupoProveedorList.as_view(), name="grupo-proveedor"),
+    path('grupoProveedor/crear', views.GrupoProveedorCreate.as_view(), name="grupo-proveedor-crear"),
+    path('grupoProveedor/<int:pk>/editar', views.GrupoProveedorUpdate.as_view(), name="grupo-proveedor-editar"),
 
     path('proveedores/', views.ProveedorList.as_view(), name="proveedores"),
     path('proveedores/crear', views.ProveedorCreate.as_view(), name="proveedores-crear"),

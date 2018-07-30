@@ -160,11 +160,11 @@
                     </div>
                     <div class="form-group">
                         <label for="vigencia" class="col-form-label">Vigencia:</label>
-                        <input class="form-control" id="vigencia">
+                        <input class="form-control datepicker" id="vigencia">
                     </div>
                     <div class="form-group">
                         <label for="vencimiento" class="col-form-label">Vencimiento:</label>
-                        <input class="form-control" id="vencimiento">
+                        <input class="form-control datepicker" id="vencimiento">
                     </div>
                 </form>
             </div>
@@ -177,6 +177,7 @@
 </div>
 {% endif %}
 <script src="{% static 'ela/js/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'ela/js/lib/moment/moment.js' %}"></script>
 <script src="{% static 'apps/facturas/proveedores/form.js' %}"></script>
 {% endblock %}
 

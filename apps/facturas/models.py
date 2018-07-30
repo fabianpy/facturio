@@ -49,18 +49,24 @@ class BaseFacturaDetalle(models.Model):
 class GrupoProveedor(BaseEntidad):
     nombre = models.CharField(max_length=100, null=False)
 
+    class Meta:
+        ordering = ['nombre']
+
     def __str__(self):
         return self.nombre
 
 
 class Proveedor(BaseEntidad):
     tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, default="RUC")
-    nro_doc = models.CharField(max_length=30, null=False, unique=True)
-    nombre = models.CharField(max_length=100, null=False, unique=True)
+    nro_doc = models.CharField(max_length=30, null=False)
+    nombre = models.CharField(max_length=100, null=False)
     direccion = models.CharField(max_length=255, null=True, blank=True)
     telefono = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    grupo = models.ForeignKey(GrupoProveedor, default=1, on_delete=models.CASCADE)
+    grupo = models.ForeignKey(GrupoProveedor, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['nombre']
 
     def __str__(self):
         return '({} - {}) {}'.format(self.tipo_doc, self.nro_doc, self.nombre)
@@ -68,11 +74,8 @@ class Proveedor(BaseEntidad):
     def documento_formateado(self):
         return formatear_documento(self.tipo_doc, self.nro_doc)
 
-    class Meta:
-        ordering = ['nombre']
 
-
-class TimbradoProveedor(BaseEntidad):
+class TimbradoProveedor(models.Model):
     timbrado = models.CharField(max_length=8, null=False)
     establecimiento = models.IntegerField(null=False)
     punto_expedicion = models.IntegerField(null=False)

@@ -21,12 +21,17 @@
 
     <link href="{% static 'ela/css/lib/chosen/component-chosen.min.css' %}" rel="stylesheet">
     <link href="{% static 'ela/css/lib/datepicker/bootstrap-datepicker3.min.css' %}" rel="stylesheet">
+
+    <style type="text/css">
+        .big-checkbox {width: 30px; height: 30px;}
+    </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
     <!--[if lt IE 9]>
     <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <![endif]-->
 </head>
 
 <body class="fix-header fix-sidebar">
@@ -249,8 +254,9 @@
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
 
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-address-card"></i><span class="hide-menu">Provisión </span></a>
+                        <li class="active"> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-address-card"></i><span class="hide-menu">Provisión </span></a>
                             <ul aria-expanded="false" class="collapse">
+                                <li><a href="/facturas/grupoProveedor">Grupos de Proveedores </a></li>
                                 <li><a href="/facturas/proveedores">Proveedores </a></li>
                                 <li><a href="/facturas/ingresoFactura/">Facturas </a></li>
                             </ul>
@@ -449,6 +455,10 @@
         $('.datatables').DataTable({
             responsive: true,
             "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
             "language": {
                 "sProcessing":     "Procesando...",
                 "sLengthMenu":     "Mostrar _MENU_ registros",

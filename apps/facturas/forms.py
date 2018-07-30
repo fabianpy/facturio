@@ -1,6 +1,19 @@
 from django import forms
 
-from apps.facturas.models import FacturaProveedor, Proveedor
+from apps.facturas.models import FacturaProveedor, Proveedor, GrupoProveedor
+
+
+class GrupoProveedorForm(forms.ModelForm):
+    class Meta:
+        model = GrupoProveedor
+        fields = ['nombre', 'habilitado']
+        labels = {'nombre': 'Nombre',
+                  'habilitado': 'Habilitado'
+                  }
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
+        }
 
 
 class ProveedorForm(forms.ModelForm):
@@ -27,11 +40,15 @@ class ProveedorForm(forms.ModelForm):
             'habilitado': forms.CheckboxInput(attrs={'class': 'big-checkbox', 'type': 'checkbox'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['grupo'].queryset = GrupoProveedor.user_objects.filter(habilitado=True)
+
 
 class FacturaProveedorForm(forms.ModelForm):
     class Meta:
         model = FacturaProveedor
-        fields = ['timbrado', 'establecimiento', 'punto_expedicion', 'numero', 'proveedor', 'fecha', 'tipo', 'moneda']
+        fields = ['timbrado', 'establecimiento', 'punto_expedicion', 'numero', 'proveedor', 'fecha', 'tipo']
         labels = {'timbrado': 'Timbrado',
                   # 'establecimiento': 'Nro. Documento',
                   # 'punto_expedicion': 'Nombre',
@@ -39,7 +56,7 @@ class FacturaProveedorForm(forms.ModelForm):
                   'fecha': 'Fecha',
                   'proveedor': 'Proveedor',
                   'tipo': 'Tipo Factura',
-                  'moneda': 'Moneda'
+                  # 'moneda': 'Moneda'
                   }
         widgets = {
             'proveedor': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
@@ -49,6 +66,10 @@ class FacturaProveedorForm(forms.ModelForm):
             'numero': forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control datepicker', 'required': 'required'}),
             'tipo': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
-            'moneda': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
+            # 'moneda': forms.Select(attrs={'class': 'form-control-chosen', 'style': 'width: 100%'}),
 
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['proveedor'].queryset = Proveedor.user_objects.filter(habilitado=True)

@@ -25,9 +25,11 @@ class Transaccion(models.Model):
 
     CREACION_PROVEEDOR = 'CrPr'
     CREACION_FACTURA_PROVEEDOR = 'CrFP'
+    CREACION_GRUPO_PROVEEDOR = 'CrGP'
     TIPO_TRANSACCION_CHOICES = (
         (CREACION_PROVEEDOR, 'Creación de Proveedor'),
         (CREACION_FACTURA_PROVEEDOR, 'Creación de Factura de Proveedor'),
+        (CREACION_GRUPO_PROVEEDOR, 'Creación de Grupo de Proveedor'),
     )
 
     tipo = models.CharField(max_length=4, choices=TIPO_TRANSACCION_CHOICES, null=False)
@@ -40,8 +42,8 @@ class Transaccion(models.Model):
         verbose_name_plural = 'Transacciones'
 
     @classmethod
-    def crear_transaccion(cls, tipo, usuario):
-        transaccion = cls(tipo=tipo, usuario=usuario)
+    def crear_transaccion(cls, tipo):
+        transaccion = cls(tipo=tipo, usuario=get_current_user())
         transaccion.save()
         return transaccion
 
@@ -55,9 +57,9 @@ class BaseEntidadManager(models.Manager):
 
 class BaseEntidad(models.Model):
     habilitado = models.BooleanField(default=True)
-    transaccion = models.ForeignKey(Transaccion, on_delete=models.DO_NOTHING, null=True)  # TODO: Set not null when admin tests ends
+    transaccion = models.ForeignKey(Transaccion, on_delete=models.DO_NOTHING, null=False)
+    objects = models.Manager()
     user_objects = BaseEntidadManager()
 
     class Meta:
         abstract = True
-
