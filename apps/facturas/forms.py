@@ -50,9 +50,6 @@ class FacturaProveedorForm(forms.ModelForm):
         model = FacturaProveedor
         fields = ['timbrado', 'establecimiento', 'punto_expedicion', 'numero', 'proveedor', 'fecha', 'tipo']
         labels = {'timbrado': 'Timbrado',
-                  # 'establecimiento': 'Nro. Documento',
-                  # 'punto_expedicion': 'Nombre',
-                  # 'numero': 'Número',
                   'fecha': 'Fecha',
                   'proveedor': 'Proveedor',
                   'tipo': 'Tipo Factura',

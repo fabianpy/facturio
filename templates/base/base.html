@@ -21,6 +21,7 @@
 
     <link href="{% static 'ela/css/lib/chosen/component-chosen.min.css' %}" rel="stylesheet">
     <link href="{% static 'ela/css/lib/datepicker/bootstrap-datepicker3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'ela/css/lib/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
 
     <style type="text/css">
         .big-checkbox {width: 30px; height: 30px;}
@@ -439,6 +440,8 @@
     <!--<script src="{% static 'ela/icons/fontawesome/js/fontawesome-all.js' %}"></script>-->
     <!--datepicker-->
     <script src="{% static 'ela/js/lib/datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <!--datepicker-->
+    <script src="{% static 'ela/js/lib/daterangepicker/daterangepicker.js' %}"></script>
 
 
     <!--DataTables-->
@@ -508,6 +511,13 @@
         $('.datepicker').datepicker({
             language:'es'
         });
+
+        //$('.input-daterange input').each(function() {
+          //  $(this).datepicker('clearDates');
+        //});
+
+        $('input[name="dates"]').daterangepicker();
+        //$('.daterangepicker').daterangepicker();
     </script>
 
 </body>

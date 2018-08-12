@@ -18,11 +18,11 @@ from facturio.middleware import get_current_user
 
 
 def prueba(request):
-    return render(request, 'facturas/ingresoFactura/list.html')
+    return render(request, 'apps/facturas/ingresoFactura/list.html')
 
 
 class GrupoProveedorList(LoginRequiredMixin, ListView):
-    template_name = 'facturas/grupoProveedor/list.html'
+    template_name = 'apps/facturas/grupoProveedor/list.html'
     model = GrupoProveedor
 
     def get_context_data(self, **kwargs):
@@ -36,7 +36,7 @@ class GrupoProveedorList(LoginRequiredMixin, ListView):
 
 
 class GrupoProveedorCreate(LoginRequiredMixin, CreateView):
-    template_name = 'facturas/grupoProveedor/form.html'
+    template_name = 'apps/facturas/grupoProveedor/form.html'
     model = GrupoProveedor
     form_class = GrupoProveedorForm
 
@@ -54,7 +54,7 @@ class GrupoProveedorCreate(LoginRequiredMixin, CreateView):
 
 
 class GrupoProveedorUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'facturas/grupoProveedor/form.html'
+    template_name = 'apps/facturas/grupoProveedor/form.html'
     model = GrupoProveedor
     form_class = GrupoProveedorForm
 
@@ -68,7 +68,7 @@ class GrupoProveedorUpdate(LoginRequiredMixin, UpdateView):
 
 
 class ProveedorList(LoginRequiredMixin, ListView):
-    template_name = 'facturas/proveedores/list.html'
+    template_name = 'apps/facturas/proveedores/list.html'
     model = Proveedor
 
     def get_context_data(self, **kwargs):
@@ -82,7 +82,7 @@ class ProveedorList(LoginRequiredMixin, ListView):
 
 
 class ProveedorCreate(LoginRequiredMixin, CreateView):
-    template_name = 'facturas/proveedores/form.html'
+    template_name = 'apps/facturas/proveedores/form.html'
     model = Proveedor
     form_class = ProveedorForm
 
@@ -107,7 +107,7 @@ class ProveedorCreate(LoginRequiredMixin, CreateView):
 
 
 class ProveedorUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'facturas/proveedores/form.html'
+    template_name = 'apps/facturas/proveedores/form.html'
     model = Proveedor
     form_class = ProveedorForm
 
@@ -181,7 +181,7 @@ class TimbradoProveedorUpdate(View):
 
 
 class FacturaProveedorList(LoginRequiredMixin, ListView):
-    template_name = 'facturas/ingresoFactura/list.html'
+    template_name = 'apps/facturas/ingresoFactura/list.html'
     model = FacturaProveedor
 
     def get_context_data(self, **kwargs):
@@ -195,7 +195,7 @@ class FacturaProveedorList(LoginRequiredMixin, ListView):
 
 
 class FacturaProveedorCreate(LoginRequiredMixin, CreateView):
-    template_name = 'facturas/ingresoFactura/form.html'
+    template_name = 'apps/facturas/ingresoFactura/form.html'
     model = FacturaProveedor
     form_class = FacturaProveedorForm
 
@@ -218,7 +218,7 @@ class FacturaProveedorCreate(LoginRequiredMixin, CreateView):
 
 
 class FacturaProveedorUpdate(LoginRequiredMixin, UpdateView):
-    template_name = 'facturas/ingresoFactura/form.html'
+    template_name = 'apps/facturas/ingresoFactura/form.html'
     model = FacturaProveedor
     form_class = FacturaProveedorForm
 

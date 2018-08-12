@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from apps.personas.models import Persona
 from apps.principal.models import IVA, Moneda, BaseEntidad
 from utils.choices import TIPO_DOC_CHOICES, TIPO_FACTURA_CHOICES
 from utils.funciones import formatear_documento
@@ -28,6 +29,10 @@ class BaseFactura(BaseEntidad):
         abstract = True
         unique_together = ('timbrado', 'establecimiento', 'punto_expedicion', 'numero')
 
+    def numero_formateado(self):
+        return '{}-{}-{}'.format(self.establecimiento.__str__().zfill(3), self.punto_expedicion.__str__().zfill(3),
+                                 self.numero.__str__().zfill(8))
+
 
 class BaseFacturaDetalle(models.Model):
     """
@@ -46,6 +51,42 @@ class BaseFacturaDetalle(models.Model):
         abstract = True
 
 
+class BaseParametroFactura(models.Model):
+    timbrado = models.CharField(max_length=8, null=False)
+    establecimiento = models.IntegerField(null=False)
+    punto_expedicion = models.IntegerField(null=False)
+    vigencia = models.DateField(auto_now=False, null=False)
+    vencimiento = models.DateField(auto_now=False, null=False)
+
+    class Meta:
+        abstract = True
+
+
+class ParametroFactura(BaseParametroFactura):
+    vigente = models.BooleanField(default=True)
+    numero_inicial = models.IntegerField(null=False)
+    numero_actual = models.IntegerField(null=True)  # último número generado
+    cantidad = models.IntegerField(null=False)  # cantidad de facturas del talonario
+
+    def __str__(self):
+        return '{}-{}'.format(self.establecimiento.__str__().zfill(3), self.punto_expedicion.__str__().zfill(3))
+
+
+class Factura(BaseFactura):
+    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    parametro_factura = models.ForeignKey(ParametroFactura, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['fecha']
+
+    def __str__(self):
+        return self.numero_formateado()
+
+
+class FacturaDetalle(BaseFacturaDetalle):
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=False)
+
+
 class GrupoProveedor(BaseEntidad):
     nombre = models.CharField(max_length=100, null=False)
 
@@ -57,7 +98,7 @@ class GrupoProveedor(BaseEntidad):
 
 
 class Proveedor(BaseEntidad):
-    tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, default="RUC")
+    tipo_doc = models.CharField(max_length=3, choices=TIPO_DOC_CHOICES, null=False, default="RUC")
     nro_doc = models.CharField(max_length=30, null=False)
     nombre = models.CharField(max_length=100, null=False)
     direccion = models.CharField(max_length=255, null=True, blank=True)
@@ -75,12 +116,7 @@ class Proveedor(BaseEntidad):
         return formatear_documento(self.tipo_doc, self.nro_doc)
 
 
-class TimbradoProveedor(models.Model):
-    timbrado = models.CharField(max_length=8, null=False)
-    establecimiento = models.IntegerField(null=False)
-    punto_expedicion = models.IntegerField(null=False)
-    vigencia = models.DateField(auto_now=False, null=False)
-    vencimiento = models.DateField(auto_now=False, null=False)
+class TimbradoProveedor(BaseParametroFactura):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
 
@@ -90,12 +126,8 @@ class FacturaProveedor(BaseFactura):
     """
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return '{0:04}-{0:04}-{0:09}'.format(self.establecimiento, self.punto_expedicion, self.numero)
-
-    def numero_formateado(self):
-        return '{}-{}-{}'.format(self.establecimiento.__str__().zfill(3), self.punto_expedicion.__str__().zfill(3),
-                                 self.numero.__str__().zfill(8))
+    def __str__(self):
+        return self.numero_formateado()
 
 
 class FacturaProveedorDetalle(BaseFacturaDetalle):

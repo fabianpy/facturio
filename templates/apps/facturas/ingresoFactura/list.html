@@ -1,0 +1,83 @@
+
+
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block content%}
+<div class="btn-group" role="group">
+    <a href="{% url 'facturas:ingresoFactura-crear' %}" type="button" role="button" class="btn btn-primary btn-rounded"><i class="fa fa-plus"></i> Nuevo</a>
+</div>
+<div class="card">
+    <div class="card-title">
+        <h3>{{titulo}}</h3>
+    </div>
+    <div class="card-body">
+        <button class="btn btn-dark btn-outline" type="button" data-toggle="collapse" data-target="#filtros" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fa fa-filter"></i> Filtros
+        </button>
+        <div class="collapse" id="filtros">
+            <div class="card card-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="control-label col-sm-2">Fechas</label>
+                            <!--<div class="col-sm-4">-->
+                                <!--<input class="form-control daterange" placeholder="dd/mm/yyyy">-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-4 input-group input-daterange">
+                                <input type="text" class="form-control">
+                                <div class="input-group-addon">a</div>
+                                <input type="text" class="form-control">
+                            </div>-->
+                            <div class="col-sm-4">
+                                <input type="text" name="dates">
+                            </div>
+
+                        </div>
+                    </div>
+                    <button class="btn btn-dark btn-outline" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table datatables table-hover table-bordered table-striped">
+                <thead>
+                    <tr role="row">
+                        <th aria-label>ID</th>
+                        <th aria-label>Proveedor</th>
+                        <th aria-label>Factura</th>
+                        <th aria-label>Fecha</th>
+                        <th aria-label>Tipo</th>
+                        <th aria-label class="text-center">Habilitado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if object_list%}
+                    {% for row in object_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'facturas:ingresoFactura-editar' row.id %}">{{row.id}}</a>
+                        </td>
+                        <td>{{row.proveedor.documento_formateado}} {{row.proveedor.nombre}}</td>
+                        <td>{{row.numero_formateado}}</td>
+                        <td>{{row.fecha}}</td>
+                        <td>{{row.get_tipo_display}}</td>
+                        <td class="text-center">
+                            {% if row.habilitado %}
+                            Sí
+                            {% else %}
+                            No
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="{% static 'ela/js/lib/moment/moment.js' %}"></script>
+{% endblock %}
+
