@@ -99,6 +99,17 @@ $(function(){
         }
     });
 
+
+    /****************************/
+
+    $('#addDetalle').click(function(){
+        console.log("hace clic");
+        var tagRow = '<div class="row">'
+        var tagInput = '<input class="form-control"/>'
+        $('#row_detalle').append(tagRow);
+        $('#row_detalle').append(tagInput);
+    })
+
 })
 
 function getParameters() {
@@ -156,3 +167,6 @@ function setDataTimbradoProveedor(data) {
 function redondearNumero(numero, decimales){
     return +(Math.round(numero+ "e+" + decimales)  + "e-" + decimales);
 }
+
+
+

@@ -217,6 +217,29 @@ class FacturaProveedorCreate(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
+class FacturaProveedorCreateRapido(LoginRequiredMixin, CreateView):
+    template_name = 'apps/facturas/ingresoFactura/form_rapido.html'
+    model = FacturaProveedor
+    form_class = FacturaProveedorForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Nueva factura de proveedor"
+        return context
+
+    def get_success_url(self):
+        return reverse('facturas:ingresoFactura-editar', args=[self.object.id])
+
+    def form_valid(self, form):
+        print("form is valid")
+        form.instance.transaccion = Transaccion.crear_transaccion(Transaccion.CREACION_FACTURA_PROVEEDOR)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("form is INvalid", form.errors)
+        return super().form_invalid(form)
+
+
 class FacturaProveedorUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'apps/facturas/ingresoFactura/form.html'
     model = FacturaProveedor

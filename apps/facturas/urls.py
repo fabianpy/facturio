@@ -6,6 +6,7 @@ app_name = 'facturas'
 urlpatterns = [
     path('ingresoFactura/', views.FacturaProveedorList.as_view(), name="ingresoFactura"),
     path('ingresoFactura/crear', views.FacturaProveedorCreate.as_view(), name="ingresoFactura-crear"),
+    path('ingresoFactura/crearRapido', views.FacturaProveedorCreateRapido.as_view(), name="ingresoFactura-crear-rapido"),
     path('ingresoFactura/<int:pk>/editar', views.FacturaProveedorUpdate.as_view(), name="ingresoFactura-editar"),
     path('ingresoFactura/detalle/<int:pk>', views.FacturaProveedorDetalleView.as_view(), name="ingresoFactura-detalle"),
     path('ingresoFactura/detalle/crear', views.FacturaProveedorDetalleCreate.as_view(),
