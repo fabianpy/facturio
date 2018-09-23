@@ -26,7 +26,9 @@ class Transaccion(models.Model):
     CREACION_PROVEEDOR = 'CrPr'
     CREACION_FACTURA_PROVEEDOR = 'CrFP'
     CREACION_GRUPO_PROVEEDOR = 'CrGP'
+    CONFIGURACION_INICIAL = 'ConI'
     TIPO_TRANSACCION_CHOICES = (
+        (CONFIGURACION_INICIAL, 'Configuración Inicial'),
         (CREACION_PROVEEDOR, 'Creación de Proveedor'),
         (CREACION_FACTURA_PROVEEDOR, 'Creación de Factura de Proveedor'),
         (CREACION_GRUPO_PROVEEDOR, 'Creación de Grupo de Proveedor'),

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -209,11 +210,29 @@ class FacturaProveedorCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         print("form is valid")
+
+        establecimiento = form.instance.establecimiento
+        punto_expedicion = form.instance.punto_expedicion
+        numero = form.instance.numero
+        proveedor = form.instance.proveedor
+
+        print("datos factura", establecimiento, punto_expedicion, numero, proveedor)
+
+        if FacturaProveedor.objects.filter(establecimiento=establecimiento, punto_expedicion=punto_expedicion,
+                                           numero=numero, proveedor=proveedor,
+                                           transaccion__usuario=get_current_user()).exists():
+            factura = FacturaProveedor.objects.get(establecimiento=establecimiento, punto_expedicion=punto_expedicion,
+                                                   numero=numero, proveedor=proveedor,
+                                                   transaccion__usuario=get_current_user())
+            raise Exception("La factura {} ya se encuentra cargada.".format(factura.numero_formateado()))
+
         form.instance.transaccion = Transaccion.crear_transaccion(Transaccion.CREACION_FACTURA_PROVEEDOR)
         return super().form_valid(form)
 
     def form_invalid(self, form):
         print("form is INvalid", form.errors)
+        messages.error(self.request, "Factura proveedor con este Timbrado, Establecimiento, Punto expedicion y Numero "
+                                     "ya existe.")
         return super().form_invalid(form)
 
 

@@ -20,8 +20,8 @@ class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
         fields = ['tipo_doc', 'nro_doc', 'nombre', 'grupo', 'direccion', 'telefono', 'email', 'habilitado']
-        labels = {'tipo_doc': 'Tipo de Documento',
-                  'nro_doc': 'Nro. Documento',
+        labels = {'tipo_doc': 'Documento',
+                  # 'nro_doc': 'Nro. Documento',
                   'nombre': 'Nombre',
                   'grupo': 'Grupo',
                   'direccion': 'Dirección',
@@ -70,3 +70,6 @@ class FacturaProveedorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['proveedor'].queryset = Proveedor.user_objects.filter(habilitado=True)
+
+    # def clean(self):
+    #     print(self)

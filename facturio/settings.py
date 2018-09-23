@@ -25,7 +25,7 @@ SECRET_KEY = '(g^%u9ili4oap@b7i1kmnp@0sve819+21on&lppd+j)+&^-p9@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '192.168.1.5']
 
 
 # Application definition
@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'facturio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'facturio_db',
+        'NAME': 'facturio_produccion',
+        # 'NAME': 'facturio_db',
         'USER': 'postgres',
         'PASSWORD': 'psql123',
         'HOST': 'localhost',

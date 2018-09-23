@@ -1,5 +1,6 @@
 $(function(){
     $('.modal').removeClass('fade');
+    $('#id_timbrado').focus();
 
     $('#nuevo').click(function(){
         $('#object_detalle_id').val(null);
@@ -9,7 +10,15 @@ $(function(){
         $('#monto_iva').val(0);
         $('#descripcion').val('');
 
+        focusMontoModal();
+
     });
+
+    function focusMontoModal(){
+        $('#monto').focusin(function(){
+            console.log("hace focus");
+        });
+    };
 
     $('[name="detalleFactura"]').click(function(){
         var id = $(this).attr('id');
@@ -104,13 +113,46 @@ $(function(){
 
     $('#addDetalle').click(function(){
         console.log("hace clic");
-        var tagRow = '<div class="row">'
-        var tagInput = '<input class="form-control"/>'
-        $('#row_detalle').append(tagRow);
-        $('#row_detalle').append(tagInput);
+        var $this = this;
+        var tagRow = $('<div class="row" name="nuevoRow">');
+        var col1 = $('<div class="col">');
+        var col2 = $('<div class="col">');
+        //var col3 = $('<div class="col">');
+        var inputMonto = $('<input class="form-control" placeholder="Monto"/>');
+        var selectIva = $('<select class="form-control"> <option value="1">10 %</option> <option value="2">5 %</option> <option value="0">Exenta</option> </select>');
+        //var count = 0;
+
+
+        $('#row_detalle').append(
+            tagRow.append(
+                col1.append(inputMonto.change(function(){
+                    calcularIVARapido({monto:inputMonto.val(), iva:selectIva.val()})
+                }))
+            )
+            .append(
+                col2.append(selectIva.change(function(){
+                    calcularIVARapido({monto:inputMonto.val(), iva:selectIva.val()})
+                }))
+            )
+        );
+
+        /*$('#row_detalle').append(tagRow);
+        $('#row_detalle').append(col);
+        col.append(inputMonto);
+        $('#row_detalle').append(col);
+        col.append(selectIva);*/
+
+        /*
+        monto
+        iva
+        */
     })
 
 })
+
+function calcularIVARapido(param) {
+    console.log("param que envia",param);
+}
 
 function getParameters() {
     var parameters = new Object;

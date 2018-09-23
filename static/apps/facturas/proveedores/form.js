@@ -69,4 +69,15 @@ $(function(){
 
     });
 
+    $('#submit').keydown(function(e){
+        if((e.ctrlKey || e.metaKey) && e.which == 83) {
+            // Save Function; 83 == key.S
+            e.preDefault();
+            console.log('llega al keydown'); //borrar
+
+            $('form').submit();
+        }
+
+    })
+
 })
