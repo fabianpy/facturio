@@ -1,5 +1,6 @@
 $(function(){
     $('.modal').removeClass('fade');
+    $('#id_nro_doc').focus();
 
     $('#nuevo').click(function(){
         $('#timbrado_id').val(null);
@@ -8,6 +9,7 @@ $(function(){
         $('#punto_expedicion').val(null);
         $('#vigencia').val(null);
         $('#vencimiento').val(null);
+        $('#vigente').prop('checked', true);
 
     });
 
@@ -24,6 +26,7 @@ $(function(){
             $('#punto_expedicion').val(data.punto_expedicion);
             $('#vigencia').val(data.vigencia);
             $('#vencimiento').val(data.vencimiento);
+            $('#vigente').prop('checked', data.vigente);
 
             $('#modalTimbrado').modal('show');
         });
@@ -45,6 +48,7 @@ $(function(){
         data.punto_expedicion = parseInt($('#punto_expedicion').val());
         data.vigencia = moment($('#vigencia').val(), ['DD/MM/YYYY', 'YYYY-MM-DD'], true).format('YYYY-MM-DD')
         data.vencimiento = moment($('#vencimiento').val(), ['DD/MM/YYYY', 'YYYY-MM-DD'], true).format('YYYY-MM-DD');
+        data.vigente = $('#vigente').prop('checked');
         data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
 
         var url = '';

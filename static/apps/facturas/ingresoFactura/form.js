@@ -10,6 +10,8 @@ $(function(){
         $('#monto_iva').val(0);
         $('#descripcion').val('');
 
+        $('#div_cantidad').hide();
+
         focusMontoModal();
 
     });

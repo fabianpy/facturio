@@ -81,8 +81,8 @@ WSGI_APPLICATION = 'facturio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'facturio_produccion',
-        # 'NAME': 'facturio_db',
+        # 'NAME': 'facturio_produccion',
+        'NAME': 'facturio_db',
         'USER': 'postgres',
         'PASSWORD': 'psql123',
         'HOST': 'localhost',

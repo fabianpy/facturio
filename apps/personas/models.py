@@ -1,11 +1,11 @@
 from django.db import models
 
 # Create your models here.
-from apps.sistema.models import BaseEntidad
+from apps.sistema.models import EntidadBase
 from utils.choices import TIPO_DOC_CHOICES
 
 
-class Persona(BaseEntidad):
+class Persona(EntidadBase):
     FISICA = 'F'
     JURIDICA = 'J'
     TIPO_PERSONA_CHOICES = (

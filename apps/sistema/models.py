@@ -7,7 +7,7 @@ from django.utils.timezone import now
 from facturio.middleware import get_current_user
 
 
-class BaseTipo(models.Model):
+class TipoBase(models.Model):
     codigo = models.CharField(max_length=3)
     nombre = models.CharField(max_length=100)
 
@@ -50,18 +50,17 @@ class Transaccion(models.Model):
         return transaccion
 
 
-class BaseEntidadManager(models.Manager):
+class EntidadBaseManager(models.Manager):
 
     def get_queryset(self):
-        print("current user", get_current_user())
         return super().get_queryset().filter(transaccion__usuario=get_current_user())
 
 
-class BaseEntidad(models.Model):
+class EntidadBase(models.Model):
     habilitado = models.BooleanField(default=True)
     transaccion = models.ForeignKey(Transaccion, on_delete=models.DO_NOTHING, null=False)
     objects = models.Manager()
-    user_objects = BaseEntidadManager()
+    user_objects = EntidadBaseManager()
 
     class Meta:
         abstract = True

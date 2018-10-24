@@ -2,6 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+from django.db.models.aggregates import Sum
+from django.db.models.expressions import Case, When
+from django.db.models.query_utils import Q
 from django.http.response import JsonResponse
 from django.shortcuts import render
 
@@ -11,7 +15,7 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 
-from apps.facturas.forms import ProveedorForm, FacturaProveedorForm, GrupoProveedorForm
+from apps.facturas.forms import ProveedorForm, FacturaProveedorForm, GrupoProveedorForm  # , FacturaProveedorFormset
 from apps.facturas.models import FacturaProveedor, Proveedor, FacturaProveedorDetalle, TimbradoProveedor, GrupoProveedor
 from apps.principal.models import IVA
 from apps.sistema.models import Transaccion
@@ -141,7 +145,8 @@ class TimbradoProveedorView(View):
         """
         timbrado = request.POST.get('timbrado')
         try:
-            timbrado_proveedor = TimbradoProveedor.objects.get(timbrado=timbrado, proveedor__transaccion__usuario=get_current_user())
+            timbrado_proveedor = TimbradoProveedor.objects.get(timbrado=timbrado,
+                                                               proveedor__transaccion__usuario=get_current_user())
             data = serializers.serialize('json', [timbrado_proveedor])
             return JsonResponse(data, safe=False)
         except ObjectDoesNotExist:
@@ -176,6 +181,7 @@ class TimbradoProveedorUpdate(View):
         timbrado_proveedor.punto_expedicion = request.POST.get('punto_expedicion')
         timbrado_proveedor.vigencia = request.POST.get('vigencia')
         timbrado_proveedor.vencimiento = request.POST.get('vencimiento')
+        timbrado_proveedor.vigente = request.POST.get('vigente')
 
         timbrado_proveedor.save()
         return JsonResponse({'success': True})
@@ -191,7 +197,7 @@ class FacturaProveedorList(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        qs = FacturaProveedor.user_objects.all()
+        qs = FacturaProveedor.factura_objects.all()
         return qs
 
 
@@ -231,9 +237,61 @@ class FacturaProveedorCreate(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         print("form is INvalid", form.errors)
-        messages.error(self.request, "Factura proveedor con este Timbrado, Establecimiento, Punto expedicion y Numero "
-                                     "ya existe.")
+        messages.error(self.request, "Factura proveedor con este Timbrado, Establecimiento, Punto expedicion y Numero ya existe.")
         return super().form_invalid(form)
+
+
+# class FacturaProveedorFSCreate(LoginRequiredMixin, CreateView):
+#     template_name = 'apps/facturas/ingresoFactura/formset.html'
+#     model = FacturaProveedor
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['titulo'] = "Nueva factura de proveedor (Formset)"
+#
+#         if self.request.POST:
+#             context['detalles_factura'] = FacturaProveedorFormset(self.request.POST)
+#         else:
+#             context['detalles_factura'] = FacturaProveedorFormset()
+#
+#         return context
+#
+#     def get_success_url(self):
+#         return reverse('facturas:ingresoFactura-editar', args=[self.object.id])
+#
+#     def form_valid(self, form):
+#         print("form is valid")
+#
+#         establecimiento = form.instance.establecimiento
+#         punto_expedicion = form.instance.punto_expedicion
+#         numero = form.instance.numero
+#         proveedor = form.instance.proveedor
+#
+#         print("datos factura", establecimiento, punto_expedicion, numero, proveedor)
+#
+#         if FacturaProveedor.objects.filter(establecimiento=establecimiento, punto_expedicion=punto_expedicion,
+#                                            numero=numero, proveedor=proveedor,
+#                                            transaccion__usuario=get_current_user()).exists():
+#             factura = FacturaProveedor.objects.get(establecimiento=establecimiento, punto_expedicion=punto_expedicion,
+#                                                    numero=numero, proveedor=proveedor,
+#                                                    transaccion__usuario=get_current_user())
+#             raise Exception("La factura {} ya se encuentra cargada.".format(factura.numero_formateado()))
+#
+#         form.instance.transaccion = Transaccion.crear_transaccion(Transaccion.CREACION_FACTURA_PROVEEDOR)
+#         context = self.get_context_data()
+#         detalles_factura = context['detalles_factura']
+#         with transaction.atomic():
+#             self.object = form.save()
+#
+#             if detalles_factura.is_valid():
+#                 detalles_factura.instance = self.object
+#                 detalles_factura.save()
+#         return super().form_valid(form)
+#
+#     def form_invalid(self, form):
+#         print("form is INvalid", form.errors)
+#         messages.error(self.request, "Factura proveedor con este Timbrado, Establecimiento, Punto expedicion y Numero ya existe.")
+#         return super().form_invalid(form)
 
 
 class FacturaProveedorCreateRapido(LoginRequiredMixin, CreateView):

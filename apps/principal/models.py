@@ -1,10 +1,10 @@
 from django.db import models
 
 # Create your models here.
-from apps.sistema.models import BaseTipo, BaseEntidad
+from apps.sistema.models import TipoBase, EntidadBase
 
 
-class Moneda(BaseTipo, BaseEntidad):
+class Moneda(TipoBase, EntidadBase):
     # hereda atributos 'codigo' y 'nombre' de la clase abstracta 'BaseTipo'
     decimales = models.IntegerField()  # TODO: usar validators de max y min value
     abreviatura = models.CharField(max_length=10)
@@ -14,5 +14,5 @@ class Moneda(BaseTipo, BaseEntidad):
         return self.nombre
 
 
-class IVA(BaseEntidad):
+class IVA(EntidadBase):
     porcentaje = models.DecimalField(max_digits=5, decimal_places=2)

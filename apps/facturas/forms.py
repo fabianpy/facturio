@@ -1,6 +1,7 @@
 from django import forms
+from django.forms.models import inlineformset_factory
 
-from apps.facturas.models import FacturaProveedor, Proveedor, GrupoProveedor
+from apps.facturas.models import FacturaProveedor, Proveedor, GrupoProveedor, FacturaProveedorDetalle
 
 
 class GrupoProveedorForm(forms.ModelForm):
@@ -73,3 +74,10 @@ class FacturaProveedorForm(forms.ModelForm):
 
     # def clean(self):
     #     print(self)
+
+
+# PRUEBA DE FORMSETS
+
+# FacturaProveedorFormset = inlineformset_factory(FacturaProveedor, FacturaProveedorDetalle, form=FacturaProveedorForm,
+#                                                 extra=2)
+
