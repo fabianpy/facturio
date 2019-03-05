@@ -86,6 +86,7 @@ $(function(){
     });
 
     $('#monto').change(function(){
+        evaluate();
         var parameters = getParameters();
         console.log('parameters', parameters);
         var montoIva = calcularIVA(parameters);
@@ -162,6 +163,19 @@ function getParameters() {
     parameters.monto = $('#monto').val();
     parameters.iva = $('#iva').val();
     return parameters;
+}
+
+function evaluate(){
+    var expression = $('#monto').val().toString();
+    console.log("expresssion", expression);
+    try {
+        var valor = math.eval(expression);
+        $('#monto').val(valor);
+    } catch (err) {
+        $('#monto').focus();
+        alert("Expresion invalida")
+    }
+
 }
 
 function calcularIVA(param) {

@@ -326,8 +326,25 @@ class FacturaProveedorUpdate(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Editar factura de proveedor"
 
+        factura = FacturaProveedor.factura_objects.get(pk=self.object.id)
         detalles = FacturaProveedorDetalle.objects.filter(factura=self.object.id)
-        context['detalles_factura'] = detalles
+
+        gravada_10 = factura.monto_10 - factura.iva_10
+        gravada_5 = factura.monto_5 - factura.iva_5
+        total_gravada = gravada_10 + gravada_5 + factura.exenta
+        total_monto = factura.monto_10 + factura.monto_5 + factura.exenta
+        total_impuesto = factura.iva_10 + factura.iva_5
+
+        # context.update({'agenda': Agenda.objects.get(pk=self.kwargs['agenda_id']), 'origen': origen})
+        context.update({
+            'detalles_factura': detalles,
+            'gravada_10': gravada_10,
+            'gravada_5': gravada_5,
+            'total_gravada': total_gravada,
+            'total_monto': total_monto,
+            'total_impuesto': total_impuesto,
+        })
+
         return context
 
     def get_success_url(self):
